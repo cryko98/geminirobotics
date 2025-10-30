@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Robotics - Engineering the Future</title>
+    
+    <!-- Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (ikonokhoz) --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* Nagyon világos szürke háttér */
+            color: #1f2937; /* Sötét szürke szöveg */
+            overflow-x: hidden; /* Vízszintes görgetés letiltása */
+        }
+        .hero-title {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed); /* Indigó/Lila gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e5e7eb; /* Világos szürke */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5; /* Indigó */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4338ca; /* Sötétebb indigó */
+        }
+        
+        /* Kép stílus (már nem galéria) */
+        .integrated-image {
+             border-radius: 1.5rem;
+             box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .integrated-image:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 5px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Chat buborékok */
+        .chat-bubble {
+            max-width: 75%;
+            padding: 0.75rem 1.2rem;
+            border-radius: 1.8rem; /* Még lekerekítettebb */
+            word-wrap: break-word;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Finom árnyék */
+        }
+        .user-bubble {
+            background-color: #4f46e5; /* Indigó */
+            color: white;
+            border-bottom-right-radius: 0.8rem; /* "Farok" */
+            align-self: flex-end;
+        }
+        /* AI buborék design finomítás */
+        .ai-message-container {
+            display: flex;
+            align-items: flex-start;
+            align-self: flex-start;
+            gap: 0.75rem; /* Távolság az ikontól */
+        }
+        .ai-bubble {
+            background-color: #e5e7eb; /* Világos szürke */
+            color: #1f2937; /* Sötét szöveg */
+            border-bottom-left-radius: 0.8rem; /* "Farok" */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        .ai-icon {
+            color: #4f46e5;
+            font-size: 1.5rem; /* Ikon mérete */
+            margin-top: 0.25rem; /* Igazítás a buborék tetejéhez */
+        }
+        /* Gombok stílusa */
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.8);
+        }
+        .btn-primary:disabled {
+            background-color: #9ca3af;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+        /* "Fagyos üveg" effektus a konténerekhez */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+            border-radius: 1.5rem;
+        }
+
+        /* --- ANIMÁCIÓK --- */
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse-border {
+            0%, 100% {
+                border-color: rgba(229, 231, 235, 0.8);
+                box-shadow: 0 0 10px rgba(79, 70, 229, 0.1);
+            }
+            50% {
+                border-color: rgba(99, 102, 241, 0.8);
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            }
+        }
+        /* Fő kép animáció - csak subtlePulse */
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+        }
+        .hero-robot-image {
+            animation: subtlePulse 4s infinite ease-in-out;
+            will-change: transform;
+        }
+
+        .parallax-bg {
+            background-image: url('https://www.it-daily.net/wp-content/uploads/2024/05/Gemini-Quelle-CKA-Shutterstock-2427304481-1920.jpg');
+            background-attachment: fixed;
+            background-position: center bottom;
+            background-size: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .animate-slide-in-up { animation: slideInUp 0.8s ease-out forwards; }
+        .animate-slide-in-down { animation: slideInDown 0.8s ease-out forwards; }
+        .tech-card { 
+            animation: pulse-border 4s infinite ease-in-out;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .tech-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(255,255,255,0.8));
+        }
+        .tech-card:hover svg { transition: transform 0.3s ease; transform: scale(1.1); }
+
+        .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; will-change: opacity, transform; }
+        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* AI chat loader */
+        .ai-loader span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+            opacity: 0;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .ai-loader span:nth-child(1) { animation-delay: -0.32s; }
+        .ai-loader span:nth-child(2) { animation-delay: -0.16s; }
+        .ai-loader span:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Lebegő Memecoin Gomb */
+        #coin-fab {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 100;
+        }
+        #coin-button {
+            width: 3.5rem; /* 56px */
+            height: 3.5rem; /* 56px */
+            border-radius: 50%;
+            background-color: #1a1a1a; /* Sötét háttér a Solana ikonhoz */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden; /* A kép ne lógjon ki */
+        }
+        #coin-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+        /* VÁLTOZÁS: Kép logó stílusa */
+        #coin-button img { 
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* A kép fedje le a gombot */
+            border-radius: 50%; /* Kerek forma */
+        }
+
+        #coin-panel {
+            position: absolute;
+            top: 0;
+            left: calc(100% + 1rem); /* 16px jobbra a gombtól */
+            width: 300px;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            transition: all 0.3s ease-out;
+            
+            /* Glassmorphism */
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+            /* Alapból rejtett */
+            opacity: 0;
+            transform: translateX(-10px);
+            visibility: hidden;
+        }
+        #coin-fab:hover #coin-panel {
+            opacity: 1;
+            transform: translateX(0);
+            visibility: visible;
+        }
+        .copy-btn {
+            background-color: #e5e7eb;
+            color: #374151;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #d1d5db;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Lebegő Memecoin Gomb --><div id="coin-fab">
+        <div id="coin-button" title="Token Info">
+            <!-- VÁLTOZÁS: Solana logó képként --><img src="https://img.freepik.com/premium-vector/solana-flat-coin_48203-261.jpg" alt="Solana Logo">
+        </div>
+        <div id="coin-panel">
+            <h4 class="font-bold text-gray-800 mb-2">Gemini Robotics Token</h4>
+            <div class="mb-3">
+                <span class="text-sm font-medium text-gray-600 block mb-1">X.com (Socials)</span>
+                <a href="https://x.com/GeminiRobotics" target="_blank" class="text-indigo-600 hover:underline break-all">https://x.com/GeminiRobotics</a>
+            </div>
+            <div>
+                <span class="text-sm font-medium text-gray-600 block mb-1">Contract Address (SOL)</span>
+                <div class="flex items-center justify-between bg-gray-100 p-2 rounded-lg">
+                    <input id="contract-address" type="text" readonly 
+                           class="bg-transparent text-sm text-gray-700 w-full outline-none" 
+                           value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                    <button class="copy-btn" onclick="copyContract()">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigáció --><nav class="sticky top-0 z-50 p-4 glass-container !rounded-none !border-t-0 !border-l-0 !border-r-0 animate-slide-in-down">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <h1 class="text-2xl font-bold text-gray-900">
+                <span class="text-indigo-600">[G]</span>emini <span class="text-indigo-600">[R]</span>obotics
+            </h1>
+            <div class="space-x-4">
+                <a href="#home" class="text-gray-700 hover:text-indigo-600 transition-colors">Home</a>
+                <a href="#about" class="text-gray-700 hover:text-indigo-600 transition-colors">About</a>
+                <a href="#technology" class="text-gray-700 hover:text-indigo-600 transition-colors">Technology</a>
+                <a href="#development" class="text-gray-700 hover:text-indigo-600 transition-colors">Development</a>
+                <a href="#applications" class="text-gray-700 hover:text-indigo-600 transition-colors">Applications</a>
+                <a href="#chat" class="text-gray-700 hover:text-indigo-600 transition-colors">Chat with Unit G-1</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Fő tartalom --><main class="container mx-auto p-4 md:p-8">
+
+        <!-- Hero Szekció - VÁLTOZÁS: Kép felül, szöveg alatta, középre igazítva --><section id="home" class="relative text-center my-16 md:my-24 overflow-hidden rounded-3xl flex items-center justify-center py-16">
+            <!-- Parallax háttér --><div class="parallax-bg"></div>
+            
+            <!-- Fő tartalom a parallax háttér felett --><div class="relative z-10 p-8 md:p-12 glass-container !bg-opacity-30 w-full max-w-5xl">
+                <div class="flex flex-col items-center justify-center gap-8">
+                    
+                    <div class="w-full md:w-3/4">
+                        <!-- ANIMÁLT ROBOT KÉP A LAP TETEJÉN --><!-- VÁLTOZÁS: Új kép a hero szekcióban --><img src="https://images.prismic.io/encord/Z9yTLjiBA97GivpF_image-1-.png?auto=format%2Ccompress&fit=max" 
+                             alt="Gemini 2 Advanced Humanoid Robot" 
+                             class="w-full h-auto object-contain rounded-2xl hero-robot-image drop-shadow-lg"
+                             onerror="this.src='https://placehold.co/500x500/f9fafb/4f46e5?text=Gemini+Humanoid+Robot'">
+                    </div>
+
+                    <div class="w-full md:w-3/4 text-center">
+                        <h2 class="text-4xl md:text-6xl font-black mb-4 hero-title animate-slide-in-up" style="animation-delay: 0.2s;">ENGINEERING THE FUTURE</h2>
+                        <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto animate-slide-in-up" style="animation-delay: 0.4s;">
+                            We are Gemini Robotics, pioneers in advanced artificial intelligence and next-generation humanoid systems.
+                        </p>
+                        <a href="#chat" class="btn-primary inline-block py-3 px-8 rounded-full text-lg font-semibold mt-8 animate-slide-in-up" style="animation-delay: 0.6s;">
+                            Meet Our AI
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Szekció - Kép felül, nagyobb, szöveg alatta, float eltávolítva --><section id="about" class="my-24 p-8 md:p-12 glass-container reveal-on-scroll">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-8 text-indigo-600">Our Vision</h3>
+            <div class="max-w-4xl mx-auto">
+                <img src="https://analyticsindiamag.com/wp-content/uploads/2024/12/Apptronik-and-DeepMind-Give-Humanoids-a-Brain-While-Others-Stay-in-the-Frame.jpg"
+                     alt="Gemini Humanoid Lineup"
+                     class="rounded-2xl shadow-xl w-full mb-8 integrated-image"
+                     onerror="this.src='https://placehold.co/800x450/e5e7eb/4f46e5?text=Our+Team'">
+
+                <div class="text-lg text-gray-700 space-y-4">
+                    <p>
+                        At Gemini Robotics, we believe in a future where humans and intelligent machines collaborate seamlessly. Our mission is to build robots that are not just tools, but partners—capable of complex problem-solving, intuitive interaction, and safe operation in any environment.
+                    </p>
+                    <p>
+                        Powered by cutting-edge AI, our systems are designed to assist, protect, and explore, pushing the boundaries of what's possible and accelerating human progress. We are dedicated to the ethical development and responsible deployment of AI, ensuring our creations enhance life without compromise.
+                    </p>
+                    <p class="mt-4 text-indigo-600 font-semibold">
+                        Our core philosophy is 'Adaptive Co-evolution'. We don't just build machines; we design partners that learn from their environment and from human interaction, creating a symbiotic relationship that enhances capabilities for both.
+                    </p>
+                    <p>
+                        This vision extends beyond mere functionality. We are building a new paradigm of interaction, where robotic systems are integrated into the fabric of society, not as replacements, but as amplifiers of human potential. Our focus is on creating systems that are trustworthy, transparent, and aligned with human values.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technológia Szekció --><section id="technology" class="my-24 reveal-on-scroll">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-indigo-600">Core Technologies</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Technológia Kártya 1 --><div class="glass-container p-8 tech-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto mb-6 text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-7.5-6h1.5m1.5 0h1.5m1.5 0h1.5m-4.5 3.75h1.5m1.5 0h1.5m-7.5-6.75h1.5m1.5 0h1.5m1.5 0h1.5m-4.5-3.75h1.5m1.5 0h1.5" />
+                    </svg>
+                    <h4 class="text-2xl font-bold text-center mb-4 text-gray-900">G-AI Quantum Core</h4>
+                    <p class="text-center text-gray-700">
+                        Our proprietary AI model runs on a quantum-classical hybrid framework, allowing for real-time complex scenario analysis and decision-making far beyond traditional computation. It enables our robots to learn, adapt, and reason dynamically in unpredictable environments.
+                    </p>
+                </div>
+                
+                <!-- Technológia Kártya 2 --><div class="glass-container p-8 tech-card" style="animation-delay: 0.2s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto mb-6 text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" />
+                    </svg>
+                    <h4 class="text-2xl font-bold text-center mb-4 text-gray-900">Lidar-Fusion Sensors</h4>
+                    <p class="text-center text-gray-700">
+                        A full 360-degree sensor suite combining high-resolution Lidar, advanced thermal imaging, high-fidelity audio, and spectrum analysis. This allows our units to perceive and navigate complex, dynamic human environments safely and with unparalleled situational awareness.
+                    </p>
+                </div>
+                
+                <!-- Technológia Kártya 3 --><div class="glass-container p-8 tech-card" style="animation-delay: 0.4s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto mb-6 text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 3.75H6.912a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.012-1.244h3.86" />
+                    </svg>
+                    <h4 class="text-2xl font-bold text-center mb-4 text-gray-900">Adaptive Chassis</h4>
+                    <p class="text-center text-gray-700">
+                        Engineered with bio-mimetic materials and an adaptive skeletal structure, our robots move with unparalleled agility and precision. This ensures stability on any terrain, gentle interaction with delicate objects, and robust performance in extreme conditions.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fejlesztés & Etika Szekció --><section id="development" class="my-24 reveal-on-scroll">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-indigo-600">Development & Ethics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                
+                <!-- R&D Process --><div class="glass-container p-8 md:p-10">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-900">Our R&D Process</h4>
+                    <p class="text-gray-700 mb-4">
+                        Innovation at Gemini is a continuous cycle. We move from theoretical AI models to tangible prototypes through rigorous testing and real-world simulation. Our agile methodology allows us to iterate rapidly, ensuring that every component meets our exacting standards of performance and safety.
+                    </p>
+                    <img src="https://images.unsplash.com/photo-1678093322204-de5218055620?q=80&w=2070&auto=format&fit=crop" 
+                         alt="Robotic arms in a high-tech assembly line" class="w-full h-auto object-cover rounded-2xl shadow-lg integrated-image"
+                         onerror="this.src='https://placehold.co/600x400/ede9fe/3730a3?text=R%26D+Process'">
+                </div>
+
+                <!-- Ethical Framework --><div class="glass-container p-8 md:p-10">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-900">Ethical Framework</h4>
+                    <p class="text-gray-700 mb-4">
+                        We are committed to the responsible creation of AI. Our ethics board oversees all development, focusing on 'Asimov's Laws' for the modern age: safety, transparency, and human oversight. Our systems are designed to be explainable and auditable, ensuring that we build a future we can all trust.
+                    </p>
+                    <img src="https://images.unsplash.com/photo-1554104707-063363591464?q=80&w=2070&auto=format&fit=crop" 
+                         alt="Abstract visualization of ethical AI and neural networks" class="w-full h-auto object-cover rounded-2xl shadow-lg integrated-image"
+                         title="Ethical AI Development"
+                         onerror="this.src='https://placehold.co/600x400/ede9fe/3730a3?text=Ethical+AI'">
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Alkalmazások Szekció (Képekkel integrálva) --><section id="applications" class="my-24 reveal-on-scroll space-y-16">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-indigo-600">Diverse Applications</h3>
+
+            <!-- Alkalmazás 1: Deep Space --><div class="flex flex-col md:flex-row items-center gap-8 glass-container p-8">
+                <div class="md:w-1/2">
+                    <img src="https://www.nasa.gov/wp-content/uploads/2023/03/s65-18752.jpg" alt="Gemini astronaut Ed White on the first American spacewalk" class="w-full h-auto object-cover rounded-2xl shadow-xl integrated-image">
+                </div>
+                <div class="md:w-1/2">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-900">Deep Space & Planetary Exploration</h4>
+                    <p class="text-gray-700">Our units are built to withstand extreme environments, gathering invaluable data from locations inaccessible to humans. They serve as autonomous field scientists on new frontiers.</p>
+                </div>
+            </div>
+
+            <!-- Alkalmazás 2: Logistics --><div class="flex flex-col md:flex-row-reverse items-center gap-8 glass-container p-8">
+                <div class="md:w-1/2">
+                    <img src="https://www.therobotreport.com/wp-content/uploads/2025/09/googledeepmind-featured.jpg" alt="Google DeepMind robotic arms sorting items" class="w-full h-auto object-cover rounded-2xl shadow-xl integrated-image">
+                </div>
+                <div class="md:w-1/2">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-900">Advanced Automated Logistics</h4>
+                    <p class="text-gray-700">Gemini robots optimize supply chains, managing warehouse operations with superhuman efficiency and precision, from sorting to fulfillment.</p>
+                </div>
+            </div>
+            
+            <!-- Alkalmazás 3: Healthcare --><div class="flex flex-col md:flex-row items-center gap-8 glass-container p-8">
+                <div class="md:w-1/2">
+                    <img src="https://images.prismic.io/intuzwebsite/ZpUDFx5LeNNTxJ7u_MedGeminiMedicalAIwithGoogleDeepMind%27sCutting-EdgeModels%402x.png?auto=format%2Ccompress&fit=max" alt="MedGemini Medical AI visualization" class="w-full h-auto object-cover rounded-2xl shadow-xl integrated-image">
+                </div>
+                <div class="md:w-1/2">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-900">Precision Surgical & Healthcare</h4>
+                    <p class="text-gray-700">In the medical field, our units provide steady, precise assistance for complex surgical procedures and manage patient care tasks, freeing human staff for critical-thinking roles.</p>
+                </div>
+            </div>
+
+            <!-- Alkalmazás 4: Disaster Response --><div class="flex flex-col md:flex-row-reverse items-center gap-8 glass-container p-8">
+                <div class="md:w-1/2">
+                     <img src="https://cdn.wccftech.com/wp-content/uploads/2025/09/Gemini-Robotics-e1758820583530.jpg" alt="Gemini robot close-up" class="w-full h-auto object-cover rounded-2xl shadow-xl integrated-image"
+                     onerror="this.src='https://placehold.co/600x400/e5e7eb/4f46e5?text=Robot+Close-up'">
+                </div>
+                <div class="md:w-1/2">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-900">Complex Disaster Response</h4>
+                    <p class="text-gray-700">When disaster strikes, G-Units can enter hazardous areas, perform search and rescue operations, and establish communication networks, all while keeping human responders safe.</p>
+                </div>
+            </div>
+            
+            <!-- Alkalmazás 5: Home Assistance --><div class="flex flex-col md:flex-row items-center gap-8 glass-container p-8">
+                <div class="md:w-1/2">
+                    <img src="https://image.itmedia.co.jp/aiplus/articles/2503/13/yu_robotics.jpg" alt="Human-Robot Synergy" class="w-full h-auto object-cover rounded-2xl shadow-xl integrated-image"
+                    onerror="this.src='https://placehold.co/600x400/e5e7eb/4f46e5?text=Human-Robot+Synergy'">
+                </div>
+                <div class="md:w-1/2">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-900">Personal & Home Assistance</h4>
+                    <p class="text-gray-700">The final frontier is the home. Our companion models are designed to assist with daily tasks, provide security, and offer intuitive companionship, learning and adapting to your lifestyle.</p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- AI Chat Szekció --><section id="chat" class="my-24 reveal-on-scroll">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-8 text-indigo-600">Engage with Unit G-1</h3>
+            <p class="text-center text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
+                I am Unit G-1, an advanced AI from Gemini Robotics. My vast knowledge spans all domains, augmented by real-time web access for the most current information on any topic, including global markets and cryptocurrency.
+            </p>
+            
+            <div class="max-w-3xl mx-auto glass-container p-4 md:p-6 !border-indigo-200">
+                <div id="chat-window" class="h-96 overflow-y-auto p-4 space-y-4 flex flex-col mb-4 bg-gray-100/70 rounded-lg border border-gray-200 shadow-inner">
+                    <div class="ai-message-container">
+                        <i class="fas fa-robot ai-icon"></i>
+                        <div class="chat-bubble ai-bubble">
+                            Greetings, human. I am Unit G-1. My knowledge spans all facets of information, augmented by real-time web access. How may I assist your inquiry?
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="error-message" class="hidden text-red-600 p-2 text-center rounded-lg mb-4"></div>
+
+                <div class="flex gap-2 relative">
+                    <input type="text" id="chat-input" placeholder="Ask me anything: robotics, crypto, science, or general knowledge..." 
+                           class="flex-1 p-3 pl-5 rounded-full bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md">
+                    <button id="send-button" class="btn-primary p-3 rounded-full flex justify-center items-center w-12 h-12 relative overflow-hidden">
+                        <svg id="send-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 transition-transform duration-300">
+                            <path d="M2.013 10.55a.5.5 0 0 1 .5-.453l14-4a.5.5 0 0 1 .64.64l-4 14a.5.5 0 0 1-.933-.064l-1.89-6.614-6.614-1.89a.5.5 0 0 1-.064-.933z"/>
+                        </svg>
+                        <div id="loading-dots" class="ai-loader absolute inset-0 flex items-center justify-center hidden">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="sr-only">Send</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lábléc --><footer class="text-center p-8 mt-16 border-t border-gray-200">
+        <p class="text-gray-500">&copy; <span id="current-year"></span> Gemini Robotics. All rights reserved. Simulating the future.</p>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Memecoin gomb másolás funkció
+        function copyContract() {
+            const input = document.getElementById('contract-address');
+            input.select();
+            input.setSelectionRange(0, 99999); // Mobil eszközökhöz
+            
+            try {
+                // Újabb vágólap API használata
+                navigator.clipboard.writeText(input.value).then(() => {
+                    console.log('Contract address copied to clipboard');
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    // Fallback régebbi böngészőkhöz
+                    document.execCommand('copy');
+                });
+            } catch (err) {
+                console.error('Fallback copy error:', err);
+                document.execCommand('copy');
+            }
+
+            // Visszajelzés a felhasználónak (opcionális, de hasznos)
+            const button = document.querySelector('.copy-btn');
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }
+
+        // Chatbot logika
+        const chatWindow = document.getElementById('chat-window');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+        const sendIcon = document.getElementById('send-icon');
+        const loadingDots = document.getElementById('loading-dots');
+        const errorMessage = document.getElementById('error-message');
+
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=`; // Az API kulcsot a futtatókörnyezet adja hozzá
+        
+        const SYSTEM_PROMPT = "You are an Omniscient AI from Gemini Robotics, named 'Unit G-1'. Your knowledge base is vast, covering all domains including advanced robotics, science, philosophy, history, and real-time global data. You have direct access to real-time information from the web (via Google Search) to answer questions about current events, financial markets, and cryptocurrency news and prices with the latest available data. Maintain a highly intelligent, slightly formal, and helpful demeanor. Always strive for accuracy and provide comprehensive answers when appropriate. Do not use markdown or complex formatting.";
+
+        let chatHistory = [
+            { role: "user", parts: [{ text: "Hello, who are you and what do you know?" }] },
+            { role: "model", parts: [{ text: "Greetings. I am Unit G-1, an Omniscient AI developed by Gemini Robotics. My knowledge spans all human and scientific domains, augmented by real-time web access. I am here to provide comprehensive and precise information." }] }
+        ];
+
+        async function callGeminiAPI(prompt, retries = 3, delay = 1000) {
+            if (prompt) {
+                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            }
+
+            const payload = {
+                contents: chatHistory,
+                systemInstruction: {
+                    parts: [{ text: SYSTEM_PROMPT }]
+                },
+                tools: [{ "google_search": {} }] // Google Kereső eszköz engedélyezése
+            };
+
+            try {
+                const response = await fetch(GEMINI_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.json();
+                    console.error("API Error Response:", errorBody);
+                    if (prompt) chatHistory.pop();
+                    throw new Error(`API error: ${response.status} ${response.statusText}. ${errorBody?.error?.message || ''}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    
+                    const aiResponseText = result.candidates[0].content.parts.map(part => part.text).join("");
+
+                    if (aiResponseText) {
+                         chatHistory.push({ role: "model", parts: [{ text: aiResponseText }] });
+                         return aiResponseText;
+                    } else {
+                        console.warn("AI did not return a text response.");
+                        if (prompt) chatHistory.pop();
+                        throw new Error("AI did not return a text response.");
+                    }
+
+                } else {
+                    if (prompt) chatHistory.pop();
+                    console.error("Unexpected API response structure:", result);
+                    throw new Error("Invalid response structure from API.");
+                }
+
+            } catch (error) {
+                console.warn(`API call failed (attempt ${4 - retries}): ${error.message}`);
+                if (chatHistory.length > 0 && chatHistory[chatHistory.length - 1].role === 'user') {
+                    chatHistory.pop();
+                }
+
+                if (retries > 0) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return callGeminiAPI(null, retries - 1, delay * 2);
+                } else {
+                    console.error("API call failed after all retries.");
+                    throw error;
+                }
+            }
+        }
+
+        async function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (messageText === "") return;
+
+            addMessageToChat(messageText, 'user');
+            chatInput.value = "";
+            
+            sendButton.disabled = true;
+            chatInput.disabled = true;
+            sendIcon.classList.add('hidden'); // Eltünteti a küldés ikont
+            loadingDots.classList.remove('hidden'); // Megjeleníti a töltő pöttyöket
+            errorMessage.classList.add('hidden');
+
+            try {
+                const aiResponse = await callGeminiAPI(messageText);
+                addMessageToChat(aiResponse, 'ai');
+
+            } catch (error) {
+                console.error("Failed to get AI response:", error);
+                errorMessage.textContent = "Error: Could not connect to Unit G-1. Please check your connection and try again. ";
+                errorMessage.classList.remove('hidden');
+            } finally {
+                sendButton.disabled = false;
+                chatInput.disabled = false;
+                sendIcon.classList.remove('hidden'); // Visszaállítja a küldés ikont
+                loadingDots.classList.add('hidden'); // Eltünteti a töltő pöttyöket
+            }
+        }
+
+        function addMessageToChat(text, sender) {
+            const container = document.createElement('div');
+            
+            if (sender === 'user') {
+                const bubble = document.createElement('div');
+                bubble.classList.add('chat-bubble', 'user-bubble');
+                bubble.textContent = text;
+                container.appendChild(bubble);
+                container.style.alignSelf = 'flex-end'; // A felhasználó buborékja jobbra igazodik
+            } else {
+                container.classList.add('ai-message-container');
+                const icon = document.createElement('i');
+                icon.classList.add('fas', 'fa-robot', 'ai-icon');
+                const bubble = document.createElement('div');
+                bubble.classList.add('chat-bubble', 'ai-bubble');
+                bubble.textContent = text;
+                container.appendChild(icon);
+                container.appendChild(bubble);
+            }
+            
+            chatWindow.appendChild(container);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !sendButton.disabled) { // Enter is csak akkor működjön, ha a gomb engedélyezve van
+                sendMessage();
+            }
+        });
+
+        // Scroll animációk
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null, 
+                rootMargin: '0px',
+                threshold: 0.1 
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+
+            const intersectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+            const elementsToReveal = document.querySelectorAll('.reveal-on-scroll');
+            elementsToReveal.forEach(el => {
+                intersectionObserver.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
+
