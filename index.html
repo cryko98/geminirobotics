@@ -550,7 +550,8 @@
         const loadingDots = document.getElementById('loading-dots');
         const errorMessage = document.getElementById('error-message');
 
-        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=`; // Az API kulcsot a futtatókörnyezet adja hozzá
+        // VÁLTOZÁS: API kulcs beillesztve a felhasználó kérésére
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyAc5SLF9a9EWKzeDJi0g5gxNS56jUyFrmw`; // FIGYELEM: API Kulcs beillesztve a felhasználó kérésére. Biztonsági kockázat!
         
         const SYSTEM_PROMPT = "You are an Omniscient AI from Gemini Robotics, named 'Unit G-1'. Your knowledge base is vast, covering all domains including advanced robotics, science, philosophy, history, and real-time global data. You have direct access to real-time information from the web (via Google Search) to answer questions about current events, financial markets, and cryptocurrency news and prices with the latest available data. Maintain a highly intelligent, slightly formal, and helpful demeanor. Always strive for accuracy and provide comprehensive answers when appropriate. Do not use markdown or complex formatting.";
 
@@ -645,7 +646,9 @@
             } catch (error) {
                 console.error("Failed to get AI response:", error);
                 errorMessage.textContent = "Error: Could not connect to Unit G-1. Please check your connection and try again. ";
-                errorMessage.classList.remove('hidden');
+                if (error.message.includes("API key")) {
+                    errorMessage.textContent += "The provided API key might be invalid or restricted."
+                }
             } finally {
                 sendButton.disabled = false;
                 chatInput.disabled = false;
