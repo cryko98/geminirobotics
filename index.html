@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemini Robotics - Engineering the Future</title>
-     <link rel="icon" type="image/png" href="https://analyticsindiamag.com/wp-content/uploads/2024/12/Apptronik-and-DeepMind-Give-Humanoids-a-Brain-While-Others-Stay-in-the-Frame.jpg">
     
     <!-- Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
     
@@ -322,10 +321,18 @@
                 <div class="flex flex-col items-center justify-center gap-8">
                     
                     <div class="w-full md:w-3/4">
-                        <!-- ANIMÁLT ROBOT KÉP A LAP TETEJÉN --><img src="https://images.prismic.io/encord/Z9yTLjiBA97GivpF_image-1-.png?auto=format%2Ccompress&fit=max" 
-                             alt="Gemini 2 Advanced Humanoid Robot" 
-                             class="w-full h-auto object-contain rounded-2xl hero-robot-image drop-shadow-lg"
-                             onerror="this.src='https://placehold.co/500x500/f9fafb/4f46e5?text=Gemini+Humanoid+Robot'">
+                        <!-- VÁLTOZÁS: Kép cseréje YouTube videóra -->
+                        <!-- 16:9 Aspect Ratio Wrapper -->
+                        <div class="relative w-full overflow-hidden rounded-2xl shadow-lg hero-robot-image" style="padding-top: 56.25%;"> <!-- 16:9 arány -->
+                            <iframe 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/UObzWjPb6XM?autoplay=1&mute=1&loop=1&playlist=UObzWjPb6XM&controls=0&showinfo=0&rel=0&modestbranding=1" 
+                                title="Gemini Robotics Hero Video" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
                     </div>
 
                     <div class="w-full md:w-3/4 text-center">
@@ -750,6 +757,4 @@
     </script>
 </body>
 </html>
-
-
 
