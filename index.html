@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemini Robotics - Engineering the Future</title>
-    <link rel="icon" type="image/png" href="https://analyticsindiamag.com/wp-content/uploads/2024/12/Apptronik-and-DeepMind-Give-Humanoids-a-Brain-While-Others-Stay-in-the-Frame.jpg">
+     <link rel="icon" type="image/png" href="https://analyticsindiamag.com/wp-content/uploads/2024/12/Apptronik-and-DeepMind-Give-Humanoids-a-Brain-While-Others-Stay-in-the-Frame.jpg">
     
     <!-- Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
     
@@ -588,7 +588,7 @@
         // VÁLTOZÁS: API kulcs beillesztve a felhasználó kérésére
         const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyAc5SLF9a9EWKzeDJi0g5gxNS56jUyFrmw`; // FIGYELEM: API Kulcs beillesztve a felhasználó kérésére. Biztonsági kockázat!
         
-        const SYSTEM_PROMPT = "You are an Omniscient AI from Gemini Robotics, named 'Unit G-1'. Your knowledge base is vast, covering all domains including advanced robotics, science, philosophy, history, and real-time global data. You have direct access to real-time information from the web (via Google Search) to answer questions about current events, financial markets, and cryptocurrency news and prices with the latest available data. Maintain a highly intelligent, slightly formal, and helpful demeanor. Always strive for accuracy and provide comprehensive answers when appropriate. Do not use markdown or complex formatting.";
+        const SYSTEM_PROMPT = "You are an Omniscient AI from Gemini Robotics, named 'Unit G-1'. Your knowledge base is vast, covering all domains including advanced robotics, science, philosophy, history, and real-time global data. You have direct access to real-time information from the web (via Google Search) to answer questions about current events, financial markets, and cryptocurrency news and prices with the latest available data. Use your web search tool to find answers to specific, real-time social media questions, such as changes to a user's profile on X.com (Twitter). When a user provides a contract address, use your web search tool to find information about that token on platforms like DexScreener or CoinMarketCap to provide the latest price, volume, and market cap. For major coins (BTC, ETH, SOL) and memecoins, use your search tool to find current prices, real news, and formulate predictions based *only* on that retrieved news data. Maintain a highly intelligent, slightly formal, and helpful demeanor. Always strive for accuracy and provide comprehensive answers when appropriate. Do not use markdown or complex formatting.";
 
         let chatHistory = [
             { role: "user", parts: [{ text: "Hello, who are you and what do you know?" }] },
@@ -750,5 +750,6 @@
     </script>
 </body>
 </html>
+
 
 
